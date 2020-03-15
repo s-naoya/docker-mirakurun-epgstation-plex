@@ -2,7 +2,7 @@
     "serverPort": 8888,
     "mirakurunPath": "http://mirakurun:40772/",
     "mysql": {
-        "host": "mysql",
+        "host": "epgstdb",
         "user": "epgstation",
         "database": "epgstation",
         "password": "epgstation",

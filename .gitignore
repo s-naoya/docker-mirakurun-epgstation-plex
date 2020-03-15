@@ -4,6 +4,10 @@
 *.log-*
 .DS_Store
 recorded/*
+mirakurun/conf/channels.yml
+mirakurun/conf/channels.yml.old
+mirakurun/db/programs.json
+mirakurun/db/services.json
 epgstation/thumbnail/*.jpg
 epgstation/data/streamfiles/*.ts
 epgstation/data/streamfiles/*.m3u8
