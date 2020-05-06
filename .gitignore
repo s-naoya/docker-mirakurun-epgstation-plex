@@ -3,6 +3,7 @@
 *.log.*
 *.log-*
 .DS_Store
+.env
 recorded/*
 mirakurun/conf/channels.yml
 mirakurun/conf/channels.yml.old
