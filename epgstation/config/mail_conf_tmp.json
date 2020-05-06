@@ -1,0 +1,6 @@
+{
+    "SMTP_SERVER": "tv_smtp",
+    "SMTP_PORT": 25,
+    "SMTP_TO_ADDRESS": "",
+    "SMTP_FROM_ADDRESS": ""
+}

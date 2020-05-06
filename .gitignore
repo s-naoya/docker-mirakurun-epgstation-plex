@@ -16,5 +16,6 @@ epgstation/config/*.json
 !epgstation/config/config.json
 !epgstation/config/operatorLogConfig.json
 !epgstation/config/serviceLogConfig.json
+!epgstation/config/mail_conf_tmp.json
 epgstation/data/*.json
 !.gitkeep

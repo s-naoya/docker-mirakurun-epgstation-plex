@@ -46,6 +46,9 @@ RUN apt-get update && \
     npm install && \
     npm run build && \
 \
+# setup nodemailer
+    npm install nodemailer && \
+\
 # 不要なパッケージを削除
 \
     apt-get -y remove $DEV && \
@@ -55,6 +58,7 @@ RUN apt-get update && \
     rm -rf /tmp/ffmpeg_sources
 
 WORKDIR /usr/local/EPGStation
+COPY src/mail.js /usr/local/EPGStation
 
 ENTRYPOINT npm start
 

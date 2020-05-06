@@ -10,6 +10,9 @@
         "connectionLimit": 10
     },
     "excludeServices": [],
+    "recordedPrepRecFailedCommand": "/usr/local/bin/node /usr/local/EPGStation/mail.js PrecRecFailed PrecRecFailed",
+    "recordedFailedCommand": "/usr/local/bin/node /usr/local/EPGStation/mail.js RecordingFailed RecordingFailed",
+    "recordedEndCommand": "/usr/local/bin/node /usr/local/EPGStation/mail.js RecordingSuccess RecordingSuccess",
     "maxEncode": 2,
     "encode": [
         {
