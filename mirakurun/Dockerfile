@@ -9,18 +9,19 @@ RUN apt-get update  && \
     apt-get -y install pcscd libpcsclite1 libccid pcsc-tools vim && \
     apt-get -y install $DEV && \
 \
+# libarib
+   git clone https://github.com/stz2012/libarib25.git /tmp/libarib25 && \
+   cd /tmp/libarib25/cmake && \
+   cmake .. && \
+   make && \
+   make install && \
+   ldconfig && \
+\
 # recpt1
    git clone https://github.com/stz2012/recpt1 /tmp/recpt1 && \
    cd /tmp/recpt1/recpt1 && \
    ./autogen.sh && \
-   ./configure && \
-   make && \
-   make install && \
-\
-# libarib
-   git clone https://github.com/stz2012/libarib25.git /tmp/libarib25 && \
-   cd /tmp/libarib25 && \
-   cmake . && \
+   ./configure --enable-b25 && \
    make && \
    make install && \
 \

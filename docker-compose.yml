@@ -3,7 +3,7 @@ services:
     mirakurun:
         build:
             context: mirakurun
-        container_name: mirakurun
+        container_name: tv_mirakurun
         #cap_add:
         #    - SYS_NICE
         #    - SYS_ADMIN
@@ -21,12 +21,18 @@ services:
             - /dev/px4video1:/dev/px4video1
             - /dev/px4video2:/dev/px4video2
             - /dev/px4video3:/dev/px4video3
+            - /dev/bus/usb/001/001:/dev/bus/usb/001/001
+            - /dev/bus/usb/001/002:/dev/bus/usb/001/002
             - /dev/bus/usb/001/003:/dev/bus/usb/001/003
+            - /dev/bus/usb/001/004:/dev/bus/usb/001/004
+            - /dev/bus/usb/001/005:/dev/bus/usb/001/005
+            - /dev/bus/usb/002/001:/dev/bus/usb/002/001
+            - /dev/bus/usb/002/002:/dev/bus/usb/002/002
         restart: on-failure:5
 
     epgstdb:
         image: mariadb:10.4
-        container_name: epgstdb
+        container_name: tv_epgstdb
         volumes:
             - mysql-db:/var/lib/mysql
         environment:
@@ -43,7 +49,7 @@ services:
             context: epgstation
             args:
                 - CPUCORE=2
-        container_name: epgstation
+        container_name: tv_epgst
         volumes:
             - /etc/localtime:/etc/localtime:ro
             - ./epgstation/config:/usr/local/EPGStation/config
