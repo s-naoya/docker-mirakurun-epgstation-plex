@@ -3,7 +3,7 @@ docker-mirakurun-epgstation-plex
 
 [Mirakurun](https://github.com/Chinachu/Mirakurun) + [EPGStation](https://github.com/l3tnun/EPGStation) の Docker コンテナ
 
-[docker-mirakurun-epqstation](https://github.com/l3tnun/docker-mirakurun-epqstation)のフォーク。
+[docker-mirakurun-epgstation](https://github.com/l3tnun/docker-mirakurun-epgstation)のフォーク。
 PLEX PX-W3U4/Q3U4/W3PE4/Q3PE4 チューナー + ACR39-NTTComを利用
 
 
