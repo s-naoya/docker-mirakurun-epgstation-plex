@@ -8,6 +8,11 @@ services:
         #    - SYS_NICE
         #    - SYS_ADMIN
         privileged: true
+        logging:
+          driver: "json-file"
+          options:
+            max-file: "5"
+            max-size: "10m"
         ports:
             - "40772:40772"
         volumes:
@@ -33,6 +38,11 @@ services:
     epgstdb:
         image: mariadb:10.4
         container_name: tv_epgstdb
+        logging:
+          driver: "json-file"
+          options:
+            max-file: "5"
+            max-size: "10m"
         volumes:
             - mysql-db:/var/lib/mysql
         environment:
@@ -50,6 +60,11 @@ services:
             args:
                 - CPUCORE=2
         container_name: tv_epgst
+        logging:
+          driver: "json-file"
+          options:
+            max-file: "5"
+            max-size: "10m"
         volumes:
             - /etc/localtime:/etc/localtime:ro
             - ./epgstation/config:/usr/local/EPGStation/config
@@ -72,6 +87,11 @@ services:
       image: tecnativa/postfix-relay
       container_name: tv_smtp
       restart: on-failure:5
+      logging:
+        driver: "json-file"
+        options:
+          max-file: "5"
+          max-size: "10m"
       environment:
         MAIL_RELAY_HOST: smtp.gmail.com
         MAIL_RELAY_PORT: 587
