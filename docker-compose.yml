@@ -1,104 +1,130 @@
 version: '3'
 services:
-    mirakurun:
-        build:
-            context: mirakurun
-        container_name: tv_mirakurun
-        #cap_add:
-        #    - SYS_NICE
-        #    - SYS_ADMIN
-        privileged: true
-        logging:
-          driver: "json-file"
-          options:
-            max-file: "5"
-            max-size: "10m"
-        ports:
-            - "40772:40772"
-        volumes:
-            - /etc/localtime:/etc/localtime:ro
-            - ./mirakurun/conf:/usr/local/etc/mirakurun
-            - ./mirakurun/db:/usr/local/var/db/mirakurun
-        environment:
-            TZ: "Asia/Tokyo"
-        devices:
-            - /dev/px4video0:/dev/px4video0
-            - /dev/px4video1:/dev/px4video1
-            - /dev/px4video2:/dev/px4video2
-            - /dev/px4video3:/dev/px4video3
-            - /dev/bus/usb/001/001:/dev/bus/usb/001/001
-            - /dev/bus/usb/001/002:/dev/bus/usb/001/002
-            - /dev/bus/usb/001/003:/dev/bus/usb/001/003
-            - /dev/bus/usb/001/004:/dev/bus/usb/001/004
-            - /dev/bus/usb/001/005:/dev/bus/usb/001/005
-            - /dev/bus/usb/002/001:/dev/bus/usb/002/001
-            - /dev/bus/usb/002/002:/dev/bus/usb/002/002
-        restart: on-failure:5
-
-    epgstdb:
-        image: mariadb:10.4
-        container_name: tv_epgstdb
-        logging:
-          driver: "json-file"
-          options:
-            max-file: "5"
-            max-size: "10m"
-        volumes:
-            - mysql-db:/var/lib/mysql
-        environment:
-            MYSQL_USER: epgstation
-            MYSQL_PASSWORD: epgstation
-            MYSQL_ROOT_PASSWORD: epgstation
-            MYSQL_DATABASE: epgstation
-            TZ: "Asia/Tokyo"
-        command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --performance-schema=false --expire_logs_days=1
-        restart: on-failure:5
-
-    epgstation:
-        build:
-            context: epgstation
-            args:
-                - CPUCORE=2
-        container_name: tv_epgst
-        logging:
-          driver: "json-file"
-          options:
-            max-file: "5"
-            max-size: "10m"
-        volumes:
-            - /etc/localtime:/etc/localtime:ro
-            - ./epgstation/config:/usr/local/EPGStation/config
-            - ./epgstation/data:/usr/local/EPGStation/data
-            - ./epgstation/thumbnail:/usr/local/EPGStation/thumbnail
-            - ./epgstation/logs:/usr/local/EPGStation/logs
-            - ./recorded:/usr/local/EPGStation/recorded
-        environment:
-            TZ: "Asia/Tokyo"
-        depends_on:
-            - mirakurun
-            - epgstdb
-        ports:
-            - "8888:8888"
-            - "8889:8889"
-        #user: "1000:1000"
-        restart: on-failure:5
-
-    smtp:
-      image: tecnativa/postfix-relay
-      container_name: tv_smtp
-      restart: on-failure:5
+  mirakurun:
+      build:
+          context: mirakurun
+      container_name: tv_mirakurun
+      #cap_add:
+      #    - SYS_NICE
+      #    - SYS_ADMIN
+      privileged: true
       logging:
         driver: "json-file"
         options:
           max-file: "5"
           max-size: "10m"
+      ports:
+          - "40772:40772"
+      volumes:
+          - /etc/localtime:/etc/localtime:ro
+          - ./mirakurun/conf:/usr/local/etc/mirakurun
+          - ./mirakurun/db:/usr/local/var/db/mirakurun
       environment:
-        MAIL_RELAY_HOST: smtp.gmail.com
-        MAIL_RELAY_PORT: 587
-        MAIL_RELAY_USER: ${SMTP_USERNAME}
-        MAIL_RELAY_PASS: ${SMTP_PASSWORD}
+          TZ: "Asia/Tokyo"
+      devices:
+          - /dev/px4video0:/dev/px4video0
+          - /dev/px4video1:/dev/px4video1
+          - /dev/px4video2:/dev/px4video2
+          - /dev/px4video3:/dev/px4video3
+          - /dev/bus/usb/001/001:/dev/bus/usb/001/001
+          - /dev/bus/usb/001/002:/dev/bus/usb/001/002
+          - /dev/bus/usb/001/003:/dev/bus/usb/001/003
+          - /dev/bus/usb/001/004:/dev/bus/usb/001/004
+          - /dev/bus/usb/001/005:/dev/bus/usb/001/005
+          - /dev/bus/usb/002/001:/dev/bus/usb/002/001
+          - /dev/bus/usb/002/002:/dev/bus/usb/002/002
+      restart: on-failure:5
+
+  epgstdb:
+    image: mariadb:10.4
+    container_name: tv_epgstdb
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+    volumes:
+      - mysql-db:/var/lib/mysql
+    environment:
+      MYSQL_USER: epgstation
+      MYSQL_PASSWORD: epgstation
+      MYSQL_ROOT_PASSWORD: epgstation
+      MYSQL_DATABASE: epgstation
+      TZ: "Asia/Tokyo"
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --performance-schema=false --expire_logs_days=1
+    restart: on-failure:5
+
+  epgstation:
+    build:
+      context: epgstation
+      args:
+        - CPUCORE=2
+    container_name: tv_epgst
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./epgstation/config:/usr/local/EPGStation/config
+      - ./epgstation/data:/usr/local/EPGStation/data
+      - ./epgstation/thumbnail:/usr/local/EPGStation/thumbnail
+      - ./epgstation/logs:/usr/local/EPGStation/logs
+      - ./recorded:/usr/local/EPGStation/recorded
+      - ${BACKUP_DIR}:/backup
+    environment:
+      TZ: "Asia/Tokyo"
+    depends_on:
+      - mirakurun
+      - epgstdb
+    ports:
+      - "8888:8888"
+      - "8889:8889"
+    #user: "1000:1000"
+    restart: on-failure:5
+
+  smtp:
+    image: tecnativa/postfix-relay
+    container_name: tv_smtp
+    restart: on-failure:5
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+    environment:
+      MAIL_RELAY_HOST: smtp.gmail.com
+      MAIL_RELAY_PORT: 587
+      MAIL_RELAY_USER: ${SMTP_USERNAME}
+      MAIL_RELAY_PASS: ${SMTP_PASSWORD}
+
+  cron:
+    build: ./cron
+    container_name: tv_cron
+    restart: on-failure:5
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+    volumes:
+      - ./epgstation/config:/usr/local/EPGStation/config:ro
+      - ./epgstation/data:/usr/local/EPGStation/data:ro
+      - ./epgstation/thumbnail:/usr/local/EPGStation/thumbnail:ro
+      - ./epgstation/logs:/usr/local/EPGStation/logs:ro
+      - ./recorded:/usr/local/EPGStation/recorded:ro
+      - ${BACKUP_DIR}:/backup
+    environment:
+      EPGST_DB_HOST: tv_epgstdb
+      MYSQL_USER: epgstation
+      MYSQL_PASSWORD: epgstation
+      MYSQL_ROOT_PASSWORD: epgstation
+      MYSQL_DATABASE: epgstation
+
+
 
 volumes:
-    mysql-db:
-        driver: local
+  mysql-db:
+    driver: local
 

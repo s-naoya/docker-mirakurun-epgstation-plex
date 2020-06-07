@@ -1,0 +1,6 @@
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+LANG=ja_JP.UTF-8
+
+0 4 * * *	/bin/bash /usr/local/bin/backup.sh > /proc/1/fd/1 2>/proc/1/fd/2
+

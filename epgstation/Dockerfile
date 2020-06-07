@@ -57,6 +57,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /tmp/ffmpeg_sources
 
+ENV LANG C.UTF-8
 WORKDIR /usr/local/EPGStation
 COPY src/mail.js /usr/local/EPGStation
 
