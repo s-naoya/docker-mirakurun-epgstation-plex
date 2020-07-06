@@ -93,6 +93,9 @@ services:
       options:
         max-file: "5"
         max-size: "10m"
+    volumes:
+      - smtp_log:/var/log
+      - smtp_queue:/var/spool/postfix
     environment:
       MAIL_RELAY_HOST: smtp.gmail.com
       MAIL_RELAY_PORT: 587
@@ -115,6 +118,7 @@ services:
       - ./epgstation/logs:/usr/local/EPGStation/logs:ro
       - ./recorded:/usr/local/EPGStation/recorded:ro
       - ${BACKUP_DIR}:/backup
+      - cron_tmp:/var/lib/mysql
     environment:
       EPGST_DB_HOST: tv_epgstdb
       MYSQL_USER: epgstation
@@ -127,4 +131,7 @@ services:
 volumes:
   mysql-db:
     driver: local
+  smtp_log:
+  smtp_queue:
+  cron_tmp:
 
